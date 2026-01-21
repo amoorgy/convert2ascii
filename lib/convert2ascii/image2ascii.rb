@@ -26,7 +26,7 @@ module Convert2Ascii
 
     def initialize(**args)
       @uri = args[:uri]
-      @width = args[:width] || IO.console.winsize[1]
+      @width = args[:width] || (IO.console&.winsize&.[](1) || 80)
       @style = args[:style] || STYLE_ENUM::Color # "color": color ansi , "text": plain text
       @color = args[:color] || COLOR_ENUM::Full # full
       @color_block = args[:color_block] || false

@@ -5,15 +5,17 @@ Convert Image/Video to ASCII art.
 
 ## Intro
 
-convert2ascii provides two executable commands：
+convert2ascii provides three executable commands：
 
 * image2ascii: transform picture to ascii art and display in terminal.
 * video2ascii: transform video to ascii art, you can save or play it in terminal.
+* webcam2ascii: transform webcam feed to ascii art in real-time in terminal.
 
 It also provides classes as a gem:
 
 * Convert2Ascii::Image2Ascii
 * Convert2Ascii::Video2Ascii
+* Convert2Ascii::Webcam2Ascii
 
 you can use it in your code and make your own ascii art !
 
@@ -53,8 +55,11 @@ you can use it in your code and make your own ascii art !
 # image
 image2ascii -i </path/to/image>
 
-# video 
+# video
 video2ascii -i </path/to/video.mp4>
+
+# webcam (real-time)
+webcam2ascii
 ```
 
 
@@ -97,6 +102,35 @@ Usage: video2ascii [options]
     -o, --ouput=OUTPUT               save ascii frames to the output directory
     -p, --play_dir=PLAY_DIRNAME      input the ascii frames directory to play
         --loop
+```
+
+### webcam2ascii
+
+Convert webcam feed to ascii art in real-time.
+
+```bash
+Usage: webcam2ascii [options]
+        --version                    version
+    -d, --device=DEVICE              webcam device (default: 0)
+    -f, --fps=FPS                    frames per second (default: 10)
+    -w, --width=WIDTH                display width (integer)
+    -s, --style=STYLE                ascii style: ['color'| 'text']
+    -b, --block                      ascii color style use BLOCK or not [ true | false ]
+```
+
+Examples:
+```bash
+# Use default webcam with 10 FPS
+webcam2ascii
+
+# Use custom FPS and width
+webcam2ascii -f 15 -w 80
+
+# Use text style instead of color
+webcam2ascii -s text
+
+# Use color blocks
+webcam2ascii -b
 ```
 
 
@@ -143,6 +177,25 @@ ascii.play
 
 # chain call
 ascii.generate.play
+
+```
+
+### Convert2Ascii::Webcam2Ascii
+
+```ruby
+require 'convert2ascii/webcam2ascii'
+
+# capture from webcam
+webcam = Convert2Ascii::Webcam2Ascii.new(
+  device: "0",     # webcam device (default: "0")
+  fps: 10,         # frames per second (default: 10)
+  width: 80,       # display width
+  style: "color",  # "color" or "text"
+  color_block: false
+)
+
+# start capturing and displaying (press Ctrl+C to stop)
+webcam.start
 
 ```
 

@@ -7,7 +7,7 @@ module Convert2Ascii
   class Terminal
     class << self
       def winsize
-        IO.console.winsize # [rows, columns]
+        IO.console&.winsize || [24, 80] # [rows, columns]
       end
 
       def clear_buffer
