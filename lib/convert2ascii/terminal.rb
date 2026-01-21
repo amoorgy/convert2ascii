@@ -18,6 +18,11 @@ module Convert2Ascii
         print "\x1b[2J"
       end
 
+      def clear_from_cursor
+        # Clear from cursor to end of screen
+        print "\x1b[0J"
+      end
+
       def hide_cursor
         print "\x1b[?25l"
       end
@@ -34,6 +39,16 @@ module Convert2Ascii
       def close_buffer
         # 关闭特殊缓存
         print "\x1b[?1049l"
+      end
+
+      def move_cursor_home
+        # Move cursor to top-left (1,1)
+        print "\x1b[H"
+      end
+
+      def move_cursor_to(row, col)
+        # Move cursor to specific position
+        print "\x1b[#{row};#{col}H"
       end
     end
   end

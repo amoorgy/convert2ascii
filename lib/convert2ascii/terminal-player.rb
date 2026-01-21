@@ -20,7 +20,6 @@ module Convert2Ascii
 
       @total_duration = @frames.length * @step_duration
       @first_frame = true
-      @backspace_adjust = "\033[A" * (@frames.length + 1)
 
       regist_hook
       check_params
@@ -138,11 +137,11 @@ module Convert2Ascii
       loop do
         if frame_index <= @frames.length
           content = @frames[frame_index]
-          if !@first_frame
-            $stdout.print @backspace_adjust
-          end
-          clear_screen
-          $stdout.print(full_screen(content))
+          # Move cursor to home position, clear remaining content, and print frame
+          Terminal.move_cursor_home
+          $stdout.print(content)
+          Terminal.clear_from_cursor
+          $stdout.flush
           @first_frame = false
           sleep(@step_duration)
         end
