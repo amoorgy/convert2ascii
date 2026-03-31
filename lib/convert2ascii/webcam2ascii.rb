@@ -103,7 +103,7 @@ module Convert2Ascii
           frame_start_time = Time.now
 
           # Capture single frame from webcam
-          cmd = "ffmpeg #{device_input} -frames:v 1 -update 1 #{frame_path} -y 2>&1"
+          cmd = "ffmpeg -loglevel quiet #{device_input} -frames:v 1 -update 1 #{frame_path} -y > /dev/null 2>&1"
 
           success = system(cmd)
 
@@ -151,20 +151,11 @@ module Convert2Ascii
     end
 
     def display_frame(ascii_string)
-      if !@first_frame
-        # Move cursor back to top of screen
-        rows, _ = Terminal.winsize
-        print "\033[#{rows}A"
-      end
-
-      Terminal.clear_screen
-      print ascii_string
+      Terminal.move_cursor_home
+      $stdout.print(ascii_string)
+      Terminal.clear_from_cursor
+      $stdout.flush
       @first_frame = false
-    end
-
-    def get_backspace_adjust
-      rows, _ = Terminal.winsize
-      "\033[#{rows}A"
     end
   end
 end
